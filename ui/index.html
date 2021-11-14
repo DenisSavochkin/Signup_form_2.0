@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/style.css">
+        <link
+	    	rel="stylesheet"
+    		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+	    >
+        <title>Registration</title>
+    </head>
+
+	<body>
+		<div class="registration_form">
+			<header class="form_header">
+				<h1><i class="fas fa-user-circle"></i> StudoGram</h1>
+			</header>
+			<main class="form_main">
+				<form action="/main_page" method="post">
+					<label>First Name</label>
+                    <input type="text" name="first-name" placeholder="Enter first name" required maxlength="255">
+                    <label>Last Name</label>
+                    <input type="text" name="last-name" placeholder="Enter last name" required maxlength="255">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="Enter email" required maxlength="255">
+                    <label>Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter password">
+					<p>{{.}}</p>
+					<label>Password Strength:</label>
+					<div class="indicator">
+						<div id="indicator" class="indicator meter"></div>
+					</div>
+					<div class="button">
+						<input type="submit" value="Sign up">
+					</div>
+				</form>
+			</main>
+		</div>
+	</body>
+	<script src="js/strength.js"></script>
+</html>

@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+:root {
+	--dark-color-a: #209e7f;
+	--dark-color-b: #5ab98d;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: 'Roboto', sans-serif;
+	font-size: 16px;
+	background: url(background.jpg);
+	margin: 20px;
+}
+
+.registration_form {
+	max-width: 500px;
+	margin: 80px auto;
+	color: #fff;
+}
+
+.form_header {
+	text-align: center;
+	padding: 20px;
+	background: var(--dark-color-a);
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.form_main {
+	padding: 30px 40px;
+	background: var(--dark-color-b);
+}
+
+.form_main label {
+	display: block;
+	margin-bottom: 2px;
+	margin-top: 5px;
+}
+
+.form_main input {
+	font-size: 16px;
+	padding: 5px;
+	height: 40px;
+	width: 100%;
+}
+
+.indicator {
+	height: 10px;
+	border: 1px solid black;
+}
+
+.indicator.meter {
+	height: 100%;
+	display: block;
+	background-color: Crimson;
+	width: 0%;
+
+	transition: width 0.5s linear;
+}
+
+.button {
+	font-size: 16px;
+	padding: 15px;
+	height: 40px;
+	width: 100%;
+}
