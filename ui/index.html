@@ -20,24 +20,24 @@
 			<main class="form_main">
 				<form action="/main_page" method="post">
 					<label>First Name</label>
-                    <input type="text" name="first-name" placeholder="Enter first name" required maxlength="255">
+                    <input id="name" type="text" placeholder="Enter name">
                     <label>Last Name</label>
-                    <input type="text" name="last-name" placeholder="Enter last name" required maxlength="255">
+                    <input id="surname" type="text" placeholder="Enter surname">
                     <label>Email</label>
-                    <input type="email" name="email" placeholder="Enter email" required maxlength="255">
+                    <input id="email" type="email" placeholder="Enter email">
                     <label>Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter password">
-					<p>{{.}}</p>
+                    <input id="password" type="password" placeholder="Enter password">
 					<label>Password Strength:</label>
 					<div class="indicator">
 						<div id="indicator" class="indicator meter"></div>
 					</div>
 					<div class="button">
-						<input type="submit" value="Sign up">
+						<input id="validate-form-button" type="button" value="Sign up">
 					</div>
 				</form>
 			</main>
 		</div>
 	</body>
+	<script src="js/main.js"></script>
 	<script src="js/strength.js"></script>
 </html>
