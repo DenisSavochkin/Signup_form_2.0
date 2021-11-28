@@ -11,7 +11,7 @@ button.addEventListener('click', function (){
         password: passwordInput.value,
     }
 
-    fetch(window.location.origin + '/main_page', {
+    fetch(window.location.origin + '/validate', {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
@@ -23,11 +23,20 @@ button.addEventListener('click', function (){
         referrerPolicy: 'no-referrer',
         body: JSON.stringify(form)
     }).then(response => response.json())
-        .then((form) => {
-        console.log('Success:', form);
+        .then(data => {
+        console.log(data);
+        Validation(data);
     })
         .catch ((error) => {
         console.error('Error:', error);
     });
 
 })
+
+function Validation(data) {
+    for (let i = 0; i < data.Errors.length; i++) {
+
+        let error = data.Errors[i];
+
+    }
+}
