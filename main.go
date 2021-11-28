@@ -17,8 +17,12 @@ type formValidationRequest struct {
 }
 
 type jsonResponseError struct {
-	Key string `json:"key"`
-	Err string `json:"err"`
+	Errors []ValidationError
+}
+
+type ValidationError struct {
+	FieldName string `json:"FieldName"`
+	Message string `json:"Message"`
 }
 
 func registration(w http.ResponseWriter, r *http.Request) {
@@ -45,38 +49,28 @@ func registration(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var res jsonResponseError
+
 	err = validate.Name(fvr.Name)
 	if err != nil {
-		responseError(w, "name", err)
-		return
+		res = responseError("name", err.Error(), res)
 	}
 
 	err = validate.Name(fvr.SurName)
 	if err != nil {
-		responseError(w, "surName", err)
-		return
+		res = responseError("surName", err.Error(), res)
 	}
 
 	err = validate.Email(fvr.Email)
 	if err != nil {
-		responseError(w, "email", err)
-		return
+		res = responseError("email", err.Error(), res)
 	}
 
 	err = validate.Password(fvr.Password)
 	if err != nil {
-		responseError(w, "password", err)
-		return
+		res = responseError("password", err.Error(), res)
 	}
 
-}
-
-
-func responseError(w http.ResponseWriter, key string, err error)  {
-
-	res := jsonResponseError{key, err.Error()}
-
-	var b []byte
 	b, err = json.Marshal(res)
 	if err != nil {
 		http.Error(
@@ -84,10 +78,19 @@ func responseError(w http.ResponseWriter, key string, err error)  {
 			fmt.Sprintf("Error: %s", err.Error()),
 			http.StatusInternalServerError,
 		)
-		return
 	}
 
 	w.Write(b)
+	fmt.Println(res)
+
+}
+
+
+func responseError(fieldName, message string, res jsonResponseError) jsonResponseError  {
+
+	res.Errors = append(res.Errors, ValidationError{fieldName, message})
+
+	return res
 }
 
 
@@ -95,7 +98,7 @@ func main() {
 
 	fs := http.FileServer(http.Dir("ui"))
 	http.Handle("/", fs)
-	http.HandleFunc("/main_page", registration)
+	http.HandleFunc("/validate", registration)
 
 	log.Println("Server is starting on port 3000...")
 	log.Fatal(http.ListenAndServe(":3000", nil))
