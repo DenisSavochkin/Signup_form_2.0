@@ -6,68 +6,56 @@ const (
 	minPasswordLength = 8
 	maxPasswordLength = 64
 	maxStringLength = 255
+	minStringLength = 3
 
 	emptyStringError = "Empty string error!"
 	tooShortPasswordError = "Too short password! Password must be at least 8 characters."
-	tooLongPasswordError = "Too long password! Password must be no more than 64 characters."
+	tooLongPasswordError = "Too long password! Password must`nt be more than 64 characters."
 	tooLongStringError = "Too long string! Max length 255 symbols."
+	tooShortStringError = "Too short name!"
 	emailFormatError = "Please enter your email address in format: yourname@example.com"
 )
 
-type regError struct {
-	err string
+func Email(email string) string {
+	if isEmpty(email) {
+		return emptyStringError
+	}
+	_, err := mail.ParseAddress(email)
+	if err != nil {
+		return emailFormatError
+	}
+	return ""
 }
 
-func (r regError) Error() string {
-	return r.err
-}
-
-func Email(email string) error {
-	err := isEmpty(email)
-	if err != nil {
-		return err
+func Password(password string) string {
+	if isEmpty(password) {
+		return emptyStringError
 	}
-
-	_, err = mail.ParseAddress(email)
-	if err != nil {
-		return regError{emailFormatError}
-	}
-	return nil
-}
-
-func Password(password string) error {
-	err := isEmpty(password)
-	if err != nil {
-		return err
-	}
-
 	if len(password) < minPasswordLength {
-		return &regError{tooShortPasswordError}
+		return tooShortPasswordError
 	}
-
 	if len(password) > maxPasswordLength {
-		return &regError{tooLongPasswordError}
+		return tooLongPasswordError
 	}
-
-	return nil
+	return ""
 }
 
-func Name(name string) error {
-	err := isEmpty(name)
-	if err != nil {
-		return err
+func Name(name string) string {
+	if isEmpty(name) {
+		return emptyStringError
 	}
-
 	if len(name) > maxStringLength {
-		return &regError{tooLongStringError}
+		return tooLongStringError
 	}
-
-	return nil
+	if len(name) < minStringLength {
+		return tooShortStringError
+	}
+	return ""
 }
 
-func isEmpty(str string) error {
+func isEmpty(str string) bool {
 	if str == "" {
-		return regError{emptyStringError}
+		return true
 	}
-	return nil
+	return false
 }

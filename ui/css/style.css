@@ -70,3 +70,7 @@ body {
 	height: 40px;
 	width: 100%;
 }
+
+._err  {
+	box-shadow: 1px 1px 10px #ec7f6d;
+}

@@ -1,5 +1,5 @@
 
-const psw = document.getElementById("password")
+const psw = document.getElementById("Password")
 const block = document.getElementById("indicator")
 
 psw.addEventListener("input", checkPassword)

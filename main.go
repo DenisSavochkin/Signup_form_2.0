@@ -3,26 +3,27 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/DenisSavochkin/Signup_form_2.0/validate"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/DenisSavochkin/Signup_form_2.0/validate"
 )
 
-type formValidationRequest struct {
-	Name string `json:"name"`
-	SurName string `json:"surName"`
-	Email string `json:"email"`
-	Password string `json:"password"`
+type validationError struct {
+	FieldName string `json:"fieldName"`
+	ErrorMessage string `json:"errorMessage"`
 }
 
 type jsonResponseError struct {
-	Errors []ValidationError
+	Errors []validationError `json:"errors"`
 }
 
-type ValidationError struct {
-	FieldName string `json:"FieldName"`
-	Message string `json:"Message"`
+type formValidationRequest struct {
+	FirstName string `json:"name"`
+	Surname   string `json:"surName"`
+	Email     string `json:"email"`
+	Password string `json:"password"`
 }
 
 func registration(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +39,6 @@ func registration(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	fvr := &formValidationRequest{}
-
 	err = json.Unmarshal(b, fvr)
 	if err != nil {
 		http.Error(
@@ -49,29 +49,39 @@ func registration(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var res jsonResponseError
-
-	err = validate.Name(fvr.Name)
-	if err != nil {
-		res = responseError("name", err.Error(), res)
+	jre := &jsonResponseError{
+		Errors: make([]validationError, 0),
 	}
 
-	err = validate.Name(fvr.SurName)
-	if err != nil {
-		res = responseError("surName", err.Error(), res)
+	if validate.Name(fvr.FirstName) != "" {
+		jre.Errors = append(jre.Errors, validationError{
+			FieldName: "FirstName",
+			ErrorMessage: validate.Name(fvr.FirstName),
+		})
 	}
 
-	err = validate.Email(fvr.Email)
-	if err != nil {
-		res = responseError("email", err.Error(), res)
+	if validate.Name(fvr.Surname) != "" {
+		jre.Errors = append(jre.Errors, validationError{
+			FieldName: "Surname",
+			ErrorMessage: validate.Name(fvr.Surname),
+		})
 	}
 
-	err = validate.Password(fvr.Password)
-	if err != nil {
-		res = responseError("password", err.Error(), res)
+	if validate.Email(fvr.Email) != "" {
+		jre.Errors = append(jre.Errors, validationError{
+			FieldName: "Email",
+			ErrorMessage: validate.Email(fvr.Email),
+		})
 	}
 
-	b, err = json.Marshal(res)
+	if validate.Password(fvr.Password) != "" {
+		jre.Errors = append(jre.Errors, validationError{
+			FieldName: "Password",
+			ErrorMessage: validate.Password(fvr.Password),
+		})
+	}
+
+	b, err = json.Marshal(jre)
 	if err != nil {
 		http.Error(
 			w,
@@ -81,16 +91,8 @@ func registration(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write(b)
-	fmt.Println(res)
+	fmt.Println(jre)
 
-}
-
-
-func responseError(fieldName, message string, res jsonResponseError) jsonResponseError  {
-
-	res.Errors = append(res.Errors, ValidationError{fieldName, message})
-
-	return res
 }
 
 
