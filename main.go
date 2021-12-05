@@ -53,31 +53,35 @@ func registration(w http.ResponseWriter, r *http.Request) {
 		Errors: make([]validationError, 0),
 	}
 
-	if validate.Name(fvr.FirstName) != "" {
+	err = validate.Name(fvr.FirstName)
+	if err != nil {
 		jre.Errors = append(jre.Errors, validationError{
 			FieldName: "FirstName",
-			ErrorMessage: validate.Name(fvr.FirstName),
+			ErrorMessage: err.Error(),
 		})
 	}
 
-	if validate.Name(fvr.Surname) != "" {
+	err = validate.Name(fvr.Surname)
+	if err != nil {
 		jre.Errors = append(jre.Errors, validationError{
 			FieldName: "Surname",
-			ErrorMessage: validate.Name(fvr.Surname),
+			ErrorMessage: err.Error(),
 		})
 	}
 
-	if validate.Email(fvr.Email) != "" {
+	err = validate.Email(fvr.Email)
+	if err != nil {
 		jre.Errors = append(jre.Errors, validationError{
 			FieldName: "Email",
-			ErrorMessage: validate.Email(fvr.Email),
+			ErrorMessage: err.Error(),
 		})
 	}
 
-	if validate.Password(fvr.Password) != "" {
+	err = validate.Password(fvr.Password)
+	if err != nil {
 		jre.Errors = append(jre.Errors, validationError{
 			FieldName: "Password",
-			ErrorMessage: validate.Password(fvr.Password),
+			ErrorMessage: err.Error(),
 		})
 	}
 

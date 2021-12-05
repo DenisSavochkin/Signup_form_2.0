@@ -59,7 +59,7 @@ body {
 	height: 100%;
 	display: block;
 	background-color: Crimson;
-	width: 0%;
+	width: 0;
 
 	transition: width 0.5s linear;
 }
@@ -72,5 +72,14 @@ body {
 }
 
 ._err  {
-	box-shadow: 1px 1px 10px #ec7f6d;
+	box-shadow: 1px 1px 10px red;
+}
+._errMsg  {
+	margin-top: 10px;
+	text-align: center;
+	padding: 5px;
+	color: red;
+	background-color: #ffeeee;
+	border-radius: 15px;
+	box-shadow: 1px 1px 5px black;
 }

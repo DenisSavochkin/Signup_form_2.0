@@ -1,6 +1,9 @@
 package validate
 
-import "net/mail"
+import (
+	"fmt"
+	"net/mail"
+)
 
 const (
 	minPasswordLength = 8
@@ -16,41 +19,41 @@ const (
 	emailFormatError = "Please enter your email address in format: yourname@example.com"
 )
 
-func Email(email string) string {
+func Email(email string) error {
 	if isEmpty(email) {
-		return emptyStringError
+		return fmt.Errorf("%v", emptyStringError)
 	}
 	_, err := mail.ParseAddress(email)
 	if err != nil {
-		return emailFormatError
+		return fmt.Errorf("%v", emailFormatError)
 	}
-	return ""
+	return nil
 }
 
-func Password(password string) string {
+func Password(password string) error {
 	if isEmpty(password) {
-		return emptyStringError
+		return fmt.Errorf("%v", emptyStringError)
 	}
 	if len(password) < minPasswordLength {
-		return tooShortPasswordError
+		return fmt.Errorf("%v", tooShortPasswordError)
 	}
 	if len(password) > maxPasswordLength {
-		return tooLongPasswordError
+		return fmt.Errorf("%v", tooLongPasswordError)
 	}
-	return ""
+	return nil
 }
 
-func Name(name string) string {
+func Name(name string) error {
 	if isEmpty(name) {
-		return emptyStringError
+		return fmt.Errorf("%v", emptyStringError)
 	}
 	if len(name) > maxStringLength {
-		return tooLongStringError
+		return fmt.Errorf("%v", tooLongStringError)
 	}
 	if len(name) < minStringLength {
-		return tooShortStringError
+		return fmt.Errorf("%v", tooShortStringError)
 	}
-	return ""
+	return nil
 }
 
 func isEmpty(str string) bool {
