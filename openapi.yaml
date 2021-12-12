@@ -3,27 +3,39 @@ info:
   title: Signup Form
   version: 1.0.0
 paths:
-  /users:
-    get:
-      description: Gets all users
+  /validate:
+    post:
+      description: Sends form data on the validation service
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/User'
       responses:
         '200':
-          description: Gets an array of users
+          description: Responces validation errors
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
+                  $ref: '#/components/schemas/ValidationError'
 components:
   schemas:
     User:
       properties:
-        name:
+        FirstName:
           type: string
-        surName:
+        Surname:
           type: string
-        email:
+        Email:
           type: string
-        password:
+        Password:
+          type: string
+    ValidationError:
+      properties:
+        FieldName:
+          type: string
+        ErrorMessage:
           type: string
